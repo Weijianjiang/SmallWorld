@@ -1,0 +1,19 @@
+package edu.southalabama.csc527.smallworld.model;
+
+public class Fight {
+	
+	private Player player;
+	private Monster monster;
+	
+	public Fight(Player p, Monster m) {
+		player = p;
+		monster = m;
+	}
+	
+	public void fightTransition() {
+		while(player.stillAlive() && monster.stillAlive())
+		{
+			
+		}
+	}
+}

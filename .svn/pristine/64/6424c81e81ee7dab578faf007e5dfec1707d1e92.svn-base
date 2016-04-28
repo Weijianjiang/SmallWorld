@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smallworld version="1.0">
+  <place name="Ruined Village" article="the">
+    <description>You stand in the desolation of the once-beautiful town of Waldenheim. The villagers have long since fled the tyranny of the Dark Lord Abaddon. The menacing Morden Keep looms in the distance beyond the Dark Forest.</description>
+    <travel direction="N">Northern Road</travel>
+  </place>
+ <place name="Northern Road" article="the">
+    <description>You set out along the old Northern Road. At one time this road was rutted by many carts leading from the farms that once prospered in this area.</description>
+    <travel direction="S">Ruined Village</travel>
+    <travel direction="W">Lake Outside the Village</travel>
+    <travel direction="E">Abandoned Farm</travel>
+    <travel direction="N">Forest's Edge</travel>
+  </place>
+<place name="Lake Outside the Village" article="the">
+    <description>The majestic Lake Oreia stretches before you. Despite the desolation Abaddon brought to the area, this lake retains its pristine beauty. </description>
+    <travel direction="E">Northern Road</travel>
+  </place>
+<place name="Abandoned Farm" article="an">
+    <description>You come upon an abandoned farm, a sad testament to the once thriving economy of Waldenheim. The farmers were no doubt scared away by the forces of the Dark Lord, or worse...</description>
+    <travel direction="W">Northern Road</travel>
+  </place>
+<place name="Forest's Edge" article="the">
+    <description>The Dark Forest looms before you. There was a time when this forest did not present such dread, but Abaddon's presence atop Mt. Grivven has caused creatures of a foul ilk to take up residence in this large forest.</description>
+    <travel direction="E">Southwestern Dark Forest</travel>
+    <travel direction="S">Northern Road</travel>
+  </place>
+<place name="Southwestern Dark Forest" article="the">
+    <description>You find yourself in the forbidding gloom of the Dark Forest.</description>
+    <travel direction="W">Forest's Edge</travel>
+    <travel direction="N">Western Dark Forest</travel>
+    <travel direction="E">Southern Dark Forest</travel>
+  </place>
+<place name="Southern Dark Forest" article="the">
+    <description>You find yourself in the forbidding gloom of the Dark Forest.</description>
+    <travel direction="W">Southwestern Dark Forest</travel>
+    <travel direction="E">Southeastern Dark Forest</travel>
+    <travel direction="N">Forest Lake</travel>
+  </place>
+<place name="Southeastern Dark Forest" article="the">
+    <description>You find yourself in the forbidding gloom of the Dark Forest.</description>
+    <travel direction="W">Southern Dark Forest</travel>
+    <travel direction="E">Small Shrine</travel>
+    <travel direction="N">Eastern Dark Forest</travel>
+  </place>
+<place name="Small Shrine" article="the">
+    <description>You emerge from the Dark Forest into a clearing. A small shrine to the local fertility goddess stands in disrepair. No doubt this area once saw many festivals before Abaddon's despotism.</description>
+    <travel direction="W">Southwestern Dark Forest</travel>
+  </place>
+<place name="Western Dark Forest" article="the">
+    <description>You find yourself in the forbidding gloom of the Dark Forest.</description>
+    <travel direction="S">Southwestern Dark Forest</travel>
+    <travel direction="E">Forest Lake</travel>
+    <travel direction="N">Northwestern Dark Forest</travel>
+  </place>
+<place name="Forest Lake" article="the">
+    <description>You come upon a clearing. A large lake stretches before you. Thin rays of light reach through the canopy, giving the lake an otherworldly feel. You feel as though the lake has lost some of its purity and has been tainted with malevolence.</description>
+    <travel direction="W">Western Dark Forest</travel>
+    <travel direction="E">Eastern Dark Forest</travel>
+    <travel direction="S">Southern Dark Forest</travel>
+    <travel direction="N">Northern Dark Forest</travel>
+  </place>
+<place name="Eastern Dark Forest" article="the">
+    <description>You find yourself in the forbidding gloom of the Dark Forest.</description>
+    <travel direction="W">Forest Lake</travel>
+    <travel direction="S">Southeastern Dark Forest</travel>
+    <travel direction="N">Northeastern Dark Forest</travel>
+  </place>
+<place name="Northwestern Dark Forest" article="the">
+    <description>You find yourself in the forbidding gloom of the Dark Forest.</description>
+    <travel direction="W">Cave</travel>
+    <travel direction="E">Northern Dark Forest</travel>
+    <travel direction="S">Western Dark Forest</travel>
+  </place>
+<place name="Northern Dark Forest" article="the">
+    <description>You find yourself in the forbidding gloom of the Dark Forest.</description>
+    <travel direction="W">Northwestern Dark Forest</travel>
+    <travel direction="E">Northeastern Dark Forest</travel>
+    <travel direction="S">Forest Lake</travel>
+  </place>
+<place name="Northeastern Dark Forest" article="the">
+    <description>You find yourself in the forbidding gloom of the Dark Forest.</description>
+    <travel direction="W">Northern Dark Forest</travel>
+    <travel direction="E">Foothills of Mt. Grivven</travel>
+    <travel direction="S">Eastern Dark Forest</travel>
+  </place>
+<place name="Cave" article="a">
+    <description>The gaping maw of a large cavern emerges from the rock face. It is pitch black inside.</description>
+    <travel direction="W">Cliff</travel>
+    <travel direction="E">Northwestern Dark Forest</travel>
+    <travel direction="N">Cave Interior</travel>
+  </place>
+<place name="Cave Interior" article="the">
+    <description>This large cavern appears to be the dwelling of some manner of fell beast. The stench of filth and decay pervades the area.</description>
+    <travel direction="S">Cave</travel>
+  </place>
+<place name="Cliff" article="a">
+    <description>You come to a cliff overlooking Lake Oreia. The view is beautiful.</description>
+    <travel direction="E">Cave</travel>
+  </place>
+<place name="Foothills of Mt. Grivven" article="the">
+    <description>Mt. Grivven stands before you. This great peak seems to rise up from the surrounding land and pierce the sky. Atop this mighty peak is the dread Morden Keep, stronghold of Lord Abaddon.</description>
+    <travel direction="W">Northeastern Dark Forest</travel>
+    <travel direction="N">Mountain Path</travel>
+  </place>
+<place name="Mountain Path" article="the">
+    <description>You begin the slow ascent of the mighty Mt. Grivven. A few scraggly weeds adorn the rough path, but the mountain seems almost devoid of life. The blight of Lord Abaddon has left this mountain barren and cold.</description>
+    <travel direction="W">Gargoyle Gate</travel>
+    <travel direction="S">Foothills of Mt. Grivven</travel>
+  </place>
+<place name="Gargoyle Gate" article="the">
+    <description>The great steel eyes of the Gargoyle Gate stare menacingly at you. This fortified structure dares any foolish enough to enter, despite that none who have braved Morden Keep have returned alive.</description>
+    <travel direction="E">Mountain Path</travel>
+    <travel direction="N">Grand Hall</travel>
+  </place>
+<place name="Grand Hall" article="the">
+    <description>A deathly stillness hangs in the air of the grand entry hall of Morden Keep. Death surrounds you in the forbidding blackness.</description>
+    <travel direction="S">Gargoyle Gate</travel>
+    <travel direction="E">Banquet Hall</travel>
+    <travel direction="W">Armory</travel>
+    <travel direction="N">Ascending Stairs</travel>
+  </place>
+<place name="Armory" article="the">
+    <description>Cruel instruments of death hang on all of the walls. They gleam in the flickering light cast by the ensconced torches.</description>
+    <travel direction="S">Prison</travel>
+    <travel direction="E">Grand Hall</travel>
+  </place>
+<place name="Prison" article="the">
+    <description>Though there are none still living in the dark prison, a palpable feeling of despair pervades the area. You feel cold, as the dreaded history of this place seems to sink into your bones.</description>
+    <travel direction="N">Armory</travel>
+  </place>
+<place name="Banquet Hall" article="the">
+    <description>A massive table stretches throughout the chamber. Rich tapestries hang throughout the hall, lending an ironic elegance and pageantry to this malevolent place.</description>
+    <travel direction="W">Grand Hall</travel>
+    <travel direction="N">Kitchen</travel>
+  </place>
+<place name="Kitchen" article="the">
+    <description>You find yourself in the kitchen of Morden Keep. Large slabs of meat hang from hooks on the wall and various fruits, vegetables, breads, cheeses, and other foodstuffs are arrayed all around. The sound of a simmering pot lends an odd welcoming feel to this terrible place. "Even dark lords have to eat," you say to yourself.</description>
+    <travel direction="S">Banquet Hall</travel>
+  </place>
+<place name="Ascending Stairs" article="the">
+    <description>You climb the stairs towards the spire of Morden Keep, your heart beating faster with each step. At the top of the stairs are the chambers of the Dark Lord Abaddon. You steel your nerves and continue.</description>
+    <travel direction="S">Grand Hall</travel>
+    <travel direction="W">Chambers of Lord Abaddon</travel>
+  </place>
+<place name="Chambers of Lord Abaddon" article="the">
+    <description>These are the chambers of the Lord of Morden Keep, Abaddon! "Another fool has come to challenge me, I see." Abaddon rises from his throne and walks toward you. "Whether you've come for revenge, or for justice, or for the honor of your God, no matter. You are alone. You are weak. And you shall die, little hero." The Dark Lord raises his weapon and prepares for battle!</description>
+    <travel direction="E">Ascending Stairs</travel>
+    <travel direction="N">Room at the Top of the Tower</travel>
+  </place>
+<place name="Room at the Top of the Tower" article="the" arrivalWinsGame="Y">
+    <description>The body of the Dark Lord crumbles to dust before you, leaving only the magic stone that serves as the key to the room in which the princess is imprisoned. You open the door and find the princess lying on a decrepit bed. As you rush over to the bedside, she opens her eyes and smiles weakly. "I was beginning to lose hope," she says. "I feared his blight would hang over this land forever. Now with Abaddon gone, perhaps this land will live again." ---------------Abaddon is defeated, and you have rescued the princess. Your quest is at an end. ---------------The End. Thanks for playing! </description>
+    <travel direction="S">Chambers of Lord Abaddon</travel>
+  </place>
+  <item name="Rusty Key" article="the" location="Ruined Village" takePoints="50" dropPoints="0">
+    <place neededToEnter="Y" blockedMsg="A rusted padlock still hangs on the gate to the farm.">Abandoned Farm</place>
+  </item>
+  <item name="Skipping Stone" article="a" location="Northern Road" takePoints="50" dropPoints="0">
+    <place takePoints="15" dropPoints="1000">Lake Outside the Village</place>
+  </item>
+  <item name="Oreia Lake Water" article="some" location="Lake Outside the Village" takePoints="50" dropPoints="0">
+    <place takePoints="15" dropPoints="1000">Forest Lake</place>
+  </item>
+  <item name="Lamp" article="the" location="Abandoned Farm" takePoints="10" dropPoints="0">
+    <place neededToEnter="Y" blockedMsg="You'd be a fool to go in without some light.">Southwestern Dark Forest</place>
+    <place neededToEnter="Y" blockedMsg="The darkness of the cavern forbids entry.">Cave</place>
+  </item>
+  <item name="Silver Coin" article="a" location="Abandoned Farm" takePoints="100" dropPoints="0" />
+  <item name="Rack of Mutton" article="a" location="Kitchen" takePoints="100" dropPoints="0" />
+  <item name="Blood-darkened Bone" article="a" location="Cave Interior" takePoints="-50" dropPoints="20" >
+    <place takePoints="15" dropPoints="1000">Small Shrine</place>
+  </item>
+  <item name="Ancient Offering" article="an" location="Prison" takePoints="5" dropPoints="20" >
+    <place takePoints="15" dropPoints="1000">Small Shrine</place>
+  </item>
+  <item name="Bloody Key" article="a" location="Gargoyle Gate" takePoints="50" dropPoints="0">
+    <place neededToEnter="Y" blockedMsg="The steel door of the prison is locked.">Prison</place>
+  </item>
+  <item name="Glowing Stone" article="the" location="Chambers of Lord Abaddon" takePoints="250" dropPoints="-50">
+    <place neededToEnter="Y" blockedMsg="The door is magically sealed.">Room at the Top of the Tower</place>
+  </item>
+  <item name="Gate Key" article="the" location="Eastern Dark Forest" takePoints="50" dropPoints="0">
+    <place neededToEnter="Y" blockedMsg="The imposing portcullis is locked.">Gargoyle Gate</place>
+  </item>
+  <stats HP="100" MP="20" STR="5" DEF="3" INT="3" HIT="70" name="Player"></stats>
+  <stats HP="10" MP="0" STR="2" DEF="1" INT="0" HIT="50" name="Slime"></stats>
+  <stats HP="30" MP="10" STR="3" DEF="2" INT="1" HIT="60" name="Goblin"></stats>
+  <stats HP="50" MP="100" STR="1" DEF="1" INT="10" HIT="90" name="Wraith"></stats>
+  <stats HP="250" MP="20" STR="12" DEF="10" INT="3" HIT="75" name="Dire Bear"></stats>
+  <stats HP="167" MP="0" STR="20" DEF="5" INT="0" HIT="45" name="Mad Wolf"></stats>
+  <stats HP="85" MP="0" STR="6" DEF="4" INT="0" HIT="65" name="Ghoul"></stats>
+  <minion name="Slime" article="a" defeatPts= "5" location="Northern Road" >
+  	<description>The amorphous beast oozes toward you with all the ferocity a blob can muster!</description>
+  </minion>
+  <minion name="Goblin" article="a" defeatPts= "8" location="Western Dark Forest" >
+  	<description>A stout creature emerges from the brush. It brandishes a crude dagger! It's here to fight!!</description>
+  </minion>
+  <minion name="Wraith" article="a" defeatPts= "10" location="Northeastern Dark Forest" >
+  	<description>The air feels unusually cold. The surrounding gloom coalesces into a monstrous apparition!!</description>
+  </minion>
+  <minion name="Dire Bear" article="a" defeatPts= "25" location="Cave Interior" >
+  	<description>A hulking monstrosity stands before you. It reeks of death and its claws drip with the viscera of its prey.</description>
+  </minion>
+    <minion name="Mad Wolf" article="a" defeatPts= "25" location="Southeastern Dark Forest" >
+  	<description>You hear a low growl coming from the brush. A lone wolf, clearly mad, snarls and bounds towards you!</description>
+  </minion>
+    <minion name="Ghoul" article="a" defeatPts= "25" location="Forest Lake" >
+  	<description>From the still waters of the lake rises a humanoid form. The slime of the tainted water and its own decaying flesh drips from its body.</description>
+  </minion>
+  <player location="Ruined Village"/>
+</smallworld>

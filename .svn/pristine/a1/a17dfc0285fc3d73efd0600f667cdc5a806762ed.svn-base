@@ -1,0 +1,10 @@
+package edu.southalabama.csc527.smallworld.model;
+
+public class Boss extends Monster{
+
+	public Boss(World world, String name, String article, String description) {
+		super(world, name, article, description);
+		// TODO Auto-generated constructor stub
+	}
+
+}

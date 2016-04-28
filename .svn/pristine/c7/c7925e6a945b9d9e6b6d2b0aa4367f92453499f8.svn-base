@@ -1,0 +1,17 @@
+package edu.southalabama.csc527.smallworld.model;
+
+import java.util.Set;
+
+public class Boss extends Monster{
+
+	public Boss(World world, String name, String article, String description,
+			Set<Direction> guarding, int beatMonPointsAward) {
+		super(world, name, article, description, guarding, beatMonPointsAward);
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	
+
+}

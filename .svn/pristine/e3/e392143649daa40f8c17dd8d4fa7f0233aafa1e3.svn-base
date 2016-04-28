@@ -1,0 +1,17 @@
+package edu.southalabama.csc527.smallworld.model;
+
+public class Minion extends Monster{
+
+	public Minion(World world, String name, String article, String description,
+			Stats states, int beatMinPointsAward) {
+		super(world, name, article, description, states, beatMinPointsAward);
+		
+	} 
+	
+	//---------------Jiang's Note----------------------------//
+	// what's the difference between monster and minion 
+	// except states? In other world, what else codes should 
+	// be added in Minion class?
+	//------------------------------------------------------//
+
+}

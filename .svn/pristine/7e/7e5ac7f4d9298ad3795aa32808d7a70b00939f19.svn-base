@@ -1,0 +1,10 @@
+package edu.southalabama.csc527.smallworld.model;
+
+public abstract class Fighter extends Thing {
+
+	public Fighter(World world, String name, String article, String description) {
+		super(world, name, article, description);
+		// TODO Auto-generated constructor stub
+	}
+
+}

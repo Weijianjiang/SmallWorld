@@ -1,0 +1,196 @@
+<class-diagram version="1.0.11" icons="true" automaticImage="PNG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <enumeration id="1" corner="BOTTOM_RIGHT" language="java" name="edu.southalabama.csc527.smallworld.model.Direction" 
+    project="smallWorldItems" file="/smallWorldItems/src/edu/southalabama/csc527/smallworld/model/Direction.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="89" y="40"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="edu.southalabama.csc527.smallworld.model.World" 
+    project="smallWorldItems" file="/smallWorldItems/src/edu/southalabama/csc527/smallworld/model/World.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="113" y="465"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="edu.southalabama.csc527.smallworld.model.Thing" 
+    project="smallWorldItems" file="/smallWorldItems/src/edu/southalabama/csc527/smallworld/model/Thing.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="699" y="410"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="edu.southalabama.csc527.smallworld.model.Place" 
+    project="smallWorldItems" file="/smallWorldItems/src/edu/southalabama/csc527/smallworld/model/Place.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="705" y="956"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="edu.southalabama.csc527.smallworld.model.Item" 
+    project="smallWorldItems" file="/smallWorldItems/src/edu/southalabama/csc527/smallworld/model/Item.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="303" y="884"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="edu.southalabama.csc527.smallworld.model.PointAward" 
+    project="smallWorldItems" file="/smallWorldItems/src/edu/southalabama/csc527/smallworld/model/PointAward.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="301" y="1140"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="edu.southalabama.csc527.smallworld.model.Player" 
+    project="smallWorldItems" file="/smallWorldItems/src/edu/southalabama/csc527/smallworld/model/Player.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="1133" y="899"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="edu.southalabama.csc527.smallworld.model.IWorldObserver" 
+    project="smallWorldItems" file="/smallWorldItems/src/edu/southalabama/csc527/smallworld/model/IWorldObserver.java" 
+    binary="false">    
+    <position height="-1" width="-1" x="473" y="149"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <generalization id="9">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="10">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="11" name="f_drop"/>      
+      <multiplicity id="12" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="13">    
+    <bendpoint x="699" y="243"/>    
+    <bendpoint x="842" y="243"/>    
+    <bendpoint x="842" y="411"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="14" name="f_thingsHere">        
+        <position height="15" width="69" x="847" y="393"/>      
+      </attribute>      
+      <multiplicity id="15" minimum="0" maximum="2147483647">        
+        <position height="15" width="19" x="806" y="417"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="16">    
+    <bendpoint x="699" y="243"/>    
+    <bendpoint x="842" y="243"/>    
+    <bendpoint x="842" y="411"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="17" name="f_location">        
+        <position height="15" width="54" x="640" y="257"/>      
+      </attribute>      
+      <multiplicity id="18" minimum="0" maximum="1">        
+        <position height="15" width="21" x="702" y="258"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <bendpoint x="423" y="457"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="20" name="f_world">        
+        <position height="15" width="45" x="248" y="479"/>      
+      </attribute>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <bendpoint x="428" y="422"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="23" name="f_keyToThing">        
+        <position height="15" width="71" x="504" y="397"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="2147483647">        
+        <position height="15" width="19" x="578" y="396"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <bendpoint x="704" y="1179"/>    
+    <bendpoint x="899" y="1179"/>    
+    <bendpoint x="899" y="957"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="26" name="f_directionOfTravelToPlace"/>      
+      <multiplicity id="27" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="28">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="29">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="30">    
+    <bendpoint x="96" y="883"/>    
+    <bendpoint x="96" y="1140"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="31" name="f_dropAnywhere"/>      
+      <multiplicity id="32" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="33">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="34" name="f_observers">        
+        <position height="15" width="67" x="338" y="193"/>      
+      </attribute>      
+      <multiplicity id="35" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <bendpoint x="515" y="885"/>    
+    <bendpoint x="515" y="1140"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="37" name="f_takeAnywhere"/>      
+      <multiplicity id="38" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

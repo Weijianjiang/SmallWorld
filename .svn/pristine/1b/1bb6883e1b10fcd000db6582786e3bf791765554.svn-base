@@ -1,0 +1,45 @@
+package edu.southalabama.csc527.smallworld.model;
+
+import java.util.Random;
+
+public class Fight {
+	
+	private Player f_player;
+	private Monster f_monster;
+	
+	public Fight(Player p, Monster m) {
+		f_player = p;
+		f_monster = m;
+	}
+	
+	public boolean fightTransition() {
+		if(f_player.stillAlive() && f_monster.stillAlive())
+		{
+			f_player.beginsFighting();
+			f_monster.beginsFighting();
+			return true;
+		}
+		return false;
+	}
+	
+	public void attack(){
+		
+		Random r = new Random();
+		float chance = r.nextFloat();
+		if(chance <= (float)(f_player.getStats().getHit())){
+			int damage = (f_player.getStats().getStr() * 10);
+			int newHP = f_monster.getMonStats().getHP();
+			newHP -= damage;
+			f_monster.getMonStats().setHP(newHP);
+		}
+		else{
+			f_player.getWorld().addToMessage("You missed!");
+		}
+		if(!(f_monster.stillAlive())){
+			this.fightTransition();
+		}
+		else{
+			f_monster.takeAction(f_player);
+		}
+	}
+}

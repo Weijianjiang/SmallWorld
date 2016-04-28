@@ -1,0 +1,412 @@
+package edu.southalabama.csc527.smallworld.controller;
+
+
+import java.io.File;
+import java.util.Set;
+
+import edu.southalabama.csc527.smallworld.model.*;
+import edu.southalabama.csc527.smallworld.persistence.WorldPersistence;
+
+/**
+ * This class is responsible for executing a user's commands. In the
+ * Model/View/Controller paradigm, a {@link WorldController} instance is the
+ * controller for one {@link World} instance which is the model. It receives
+ * commands from a user interface, makes the corresponding changes to its
+ * associated {@link World}, and triggers notification to the {@link World}'s
+ * observers.
+ * 
+ * @see World
+ */
+public final class WorldController {
+
+	/**
+	 * Creates a new instance of <code>WorldController</code> for the default
+	 * world.
+	 */
+	public WorldController() {
+		this(WorldPersistence.DEFAULT_WORLD);
+	}
+
+	/**
+	 * Creates a new instance of <code>WorldController</code> for the
+	 * specified world file, which it loads.
+	 * 
+	 * @param fileName
+	 *            the world file to load
+	 */
+	public WorldController(String fileName) {
+		assert (fileName != null);
+		try {
+			f_world = WorldPersistence.loadWorld(fileName);
+		} catch (IllegalStateException e) {
+			// World file failed to load, so create a trivial but valid world
+			f_world = new World();
+			reportException(e);
+		}
+	}
+
+	/**
+	 * Gets the world (i.e., model) associated with this controller.
+	 * 
+	 * @return the world associated with this controller.
+	 */
+	public World getWorld() {
+		return f_world;
+	}
+
+	/**
+	 * Loads a previously saved {@link World} from a file.
+	 * 
+	 * @param fileName
+	 *            The name of the file to load
+	 */
+	public void loadWorld(String fileName) {
+		assert (fileName != null);
+		File file = new File(fileName);
+		World newWorld;
+		try {
+			newWorld = WorldPersistence.loadWorld(file);
+			setWorld(newWorld);
+			f_world.addToMessage("File \"" + file.getAbsolutePath()
+					+ "\" loaded.");
+			f_world.addToMessage();
+		} catch (IllegalStateException e) {
+			reportException(e);
+			f_world.addToMessage("File \"" + file.getAbsolutePath()
+					+ "\" failed to load: ");
+			f_world.addToMessage("Keeping current world");
+		}
+		f_world.turnOver();
+	}
+
+	/**
+	 * Notifies the world that the user wants to quit the game.
+	 */
+	public void quit() {
+		f_world.addToMessage("Thanks for playing!\nYour final score was: " + f_world.getPlayer().getScore());
+		f_world.setGameOver();
+		f_world.turnOver();
+	}
+
+	/**
+	 * Saves the current state of the {@link World} to a file. This world can be
+	 * loaded and game play resumed using {@link #loadWorld(String)}.
+	 * 
+	 * @param fileName
+	 *            The name of the file to create
+	 */
+	public void saveWorld(String fileName) {
+		assert (fileName != null);
+		File file = new File(fileName);
+		try {
+			WorldPersistence.saveWorld(f_world, file);
+			f_world.addToMessage("Save file \"" + file.getAbsolutePath()
+					+ "\" created.");
+		} catch (IllegalStateException e) {
+			reportException(e);
+			f_world.addToMessage("Save to file \"" + file.getAbsolutePath()
+					+ "\" FAILED.");
+			f_world.addToMessage("You will not be able to load this world");
+		}
+		f_world.turnOver();
+	}
+
+	/**
+	 * Moves the player in the direction indicated.
+	 * 
+	 * @param direction
+	 *            The direction the user wants the player to travel.
+	 */
+	public void travel(Direction direction) {
+		assert direction != null;
+		Player player = f_world.getPlayer();
+		Place playerLocation = player.getLocation();
+		if (playerLocation.isTravelAllowedToward(direction)) {
+			Place newPlayerLocation = playerLocation.getTravelDestinationToward(direction);
+			
+			if(newPlayerLocation.getMonster() != null && newPlayerLocation.getMonster().stillAlive()){
+				Monster mon = newPlayerLocation.getMonster();
+				mon.setGuarding(direction);
+				if(direction == Direction.EAST){
+					mon.setGuarding(Direction.NORTH);
+					mon.setGuarding(Direction.SOUTH);
+				}
+				else if(direction == Direction.WEST){
+					mon.setGuarding(Direction.NORTH);
+					mon.setGuarding(Direction.SOUTH);
+				}
+				else if(direction == Direction.NORTH){
+					mon.setGuarding(Direction.EAST);
+					mon.setGuarding(Direction.WEST);
+				}
+				else{
+					mon.setGuarding(Direction.EAST);
+					mon.setGuarding(Direction.WEST);
+				}
+			}
+			
+			/*
+			 * Check to see that player has items required for entry
+			 */
+			
+			Set<Item> requiredForEntrySet = newPlayerLocation.getItemsNeededForEntry();
+			Set<Item> itemsInInventory = player.getInventory();
+
+			if (itemsInInventory.containsAll(requiredForEntrySet)) {
+			
+				/*
+				 * Move the player
+				 */
+				player.setLocation(newPlayerLocation);
+				
+				/*
+				 * Check to see if the new location is a wins game location
+				 * If so: 
+				 *   Notify the player
+				 *   
+				 */
+				if (newPlayerLocation.arrivalWinsGame()) {
+					f_world.addToMessage("Congratulations! You have won the game!");
+					f_world.setGameOver();
+					
+				}
+			
+			}
+			
+			else {
+				requiredForEntrySet.removeAll(itemsInInventory);
+				for (Item i: requiredForEntrySet) {
+					f_world.addToMessage(newPlayerLocation.getBlockedMessageForItem(i));
+				}
+			}
+		} else {
+			/*
+			 * Travel is not allowed from the player's location in the specified
+			 * direction.
+			 */
+			f_world.addToMessage("Sorry, you can't move "
+					+ direction.toString().toLowerCase() + " from here.");
+			// addShortLocationDescription("You are at");
+		}
+		f_world.turnOver();
+	}
+
+	/**
+	 * @param e
+	 */
+	private void reportException(Throwable e) {
+		StringBuilder s = new StringBuilder();
+		s.append(e.getMessage());
+		if (e.getCause() != null)
+			s.append(": " + e.getCause().getMessage());
+		f_world.addToMessage(s.toString());
+	}
+
+	/**
+	 * Sets the world (i.e., model) associated with this controller. The set of
+	 * observers of the old world are setup to observer the new world.
+	 * 
+	 * @param world
+	 *            a non-null game world.
+	 */
+	public void setWorld(World world) {
+		assert (world != null);
+		/*
+		 * Transfer all observers of the old world to the new world.
+		 */
+		for (IWorldObserver o : f_world.getObservers()) {
+			world.addObserver(o);
+		}
+		f_world = world;
+	}
+
+	/**
+	 * The world associated with this controller. It must be non-null, but may
+	 * be changed via the {@link #setWorld(World)} method.
+	 */
+	private World f_world;
+
+	/** 
+	 * Removes the specified item from the player's location and places 
+	 * it in the player's inventory. 
+	 * 
+	 * @param item 
+	 * 			the item to take. 
+	 */
+	public void take(Item item) {
+		takeItem(item);
+		f_world.turnOver();
+	}
+	
+	private void takeItem(Item item) {
+		assert(item != null);
+		Player p = f_world.getPlayer();
+		
+		if (p.getInventory().contains(item)) {
+			f_world.addToMessage("You already have " + item.getName() + " in your inventory!");		
+		}
+		else if (item.getLocation() == p.getLocation()) {
+			item.setLocation(p);
+			String message = "You pick up " + item.getArticle() + " " + item.getName() + " and place it in your inventory.";	
+			PointAward pa = item.getTakePointsAward();
+			if (pa.getPoints() != 0) {
+				message = message + " You are awarded " + pa.getPoints() + " points!";
+			}
+			f_world.addToMessage(message);
+			p.addToScore(pa.getPoints());
+			pa.setPoints(0);	
+		}		
+	}
+
+	/** 
+	 * Drops the specified item from the player's inventory.
+	 *  
+	 *  @param item 
+	 * 			 the item to drop.
+	 */
+	public void drop(Item item) {
+		dropItem(item);
+		f_world.turnOver();
+	}
+	
+	private void dropItem(Item item) {
+		assert(item != null);
+		Player p = f_world.getPlayer();
+		
+		if (p.getInventory().contains(item)) {
+			Place currentLocation = p.getLocation();
+			
+			/*
+			 * Check to see if this item is required for entry into this location:
+			 * if it is, do not allow the Player to drop it
+			 */
+			
+			if (currentLocation.getItemsNeededForEntry().contains(item)) {
+				String message = "A strange force keeps you from dropping " + item.getArticle() + " " + item.getName() + " on the floor.";
+				f_world.addToMessage(message);
+			}		
+			else {		
+				item.setLocation(currentLocation);
+				
+				String message = "You drop " + item.getArticle() + " " + item.getName() + " on the floor.";	
+	
+				PointAward dropAward = item.getDropPointsAward();
+				if (dropAward.getPoints() != 0) {
+					message = message + " You are awarded " + dropAward.getPoints() + " points!";
+				}
+				p.addToScore(dropAward.getPoints());
+				dropAward.setPoints(0);
+				
+				PointAward pointSpecificDropAward = item.getLocationDropPoints(currentLocation);
+				if (pointSpecificDropAward != null) {			
+					if (pointSpecificDropAward.getPoints() != 0) {
+						message = message + " You are awarded an additional " + pointSpecificDropAward.getPoints() + " points!";
+						p.addToScore(pointSpecificDropAward.getPoints());
+						pointSpecificDropAward.setPoints(0);
+					}
+					
+				}
+				
+				f_world.addToMessage(message);
+			}
+		}
+		else {
+			f_world.addToMessage("You are not holding " + item.getName() + " in your inventory.");	
+		}
+	}
+	
+	/** 
+	 * Removes all items from the player's location and places them in the
+	 * player's inventory. 
+	 */
+	public void takeAll() {
+		Place currentLocation = f_world.getPlayer().getLocation();
+		Set<Item> itemsAtLocation = currentLocation.getInventory();
+		for (Item i: itemsAtLocation) {
+			takeItem(i);
+		}
+		f_world.turnOver();
+	}
+	
+	/** 
+	 * Examines the items in the player's inventory.
+	 */
+	public void inventory() {
+		Set<Item> itemsInInventory = f_world.getPlayer().getInventory();
+		if(itemsInInventory.isEmpty()) {
+			f_world.addToMessage("Your are not carrying any items.");
+		}
+		else {
+			f_world.addToMessage("Your are carrying the following items:");
+			for (Thing i : itemsInInventory) {
+				f_world.addToMessage("  " + i.getName());
+			}
+			f_world.addToMessage("");
+		}
+		f_world.addToMessage("\nYour current score is: " + f_world.getPlayer().getScore());
+		f_world.turnOver();
+	}
+
+	/** 
+	 * Drops all items in the player's inventory
+	 */
+	public void dropAll() {
+		Set<Item> itemsInInventory = f_world.getPlayer().getInventory();
+		for (Item item: itemsInInventory) {
+			dropItem(item);
+		}	
+		f_world.turnOver();
+	}
+
+	/**
+	 * Displays the user's score.
+	 */
+	public void score() {
+		f_world.addToMessage("Your current score is: " + f_world.getPlayer().getScore());
+		f_world.turnOver();
+	}
+	
+	/**
+	 * Performs the "heal" spell.
+	 */
+	public void heal(){
+
+		f_world.getPlayer().heal();
+		f_world.turnOver();
+	}
+	
+	/**
+	 * Creates the new fighting mode object.
+	 * 
+	 * @param play SmallWorld's current player
+	 * @param mon The monster you'll be fighting
+	 * @return the instance of the fight. Returns null if fightTransition fails.
+	 */
+	public Fight fight(Player play, Monster mon){
+		
+		System.out.println("Fight was called.");
+		Fight newFight = new Fight(play, mon);
+		boolean startFight = newFight.fightTransition();
+		if(startFight)
+			return newFight;
+		else
+			return null;
+	}
+	
+	public void attack(Fight fight){
+		
+		System.out.println("Attack was called.");
+		fight.attack();
+		f_world.turnOver();
+	}
+	
+	public void heavyHit(Fight fight){
+		
+		System.out.println("Heavy hit was called.");
+	}
+	
+	public void run(Fight fight){
+		
+		System.out.println("Run was called.");
+	}
+}

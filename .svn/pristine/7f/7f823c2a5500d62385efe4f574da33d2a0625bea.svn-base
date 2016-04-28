@@ -1,0 +1,46 @@
+package edu.southalabama.csc527.smallworld.model;
+
+public abstract class Monster extends Fighter {
+
+	//---------------Jiang's Notes--------------------//
+	// Those are my general ideas about Monster below.
+	// However, A great problem is that I don't really 
+	// understand about the guarding directions and how 
+	// the monster guards it.
+	//-----------------------------------------------//
+	
+	
+	
+	
+	public Monster(World world, String name, String article, String description, Stats states, int beatMonPointsAward) {
+		super(world, name, article, description);
+		setLocation(world.getNowherePlace());
+		f_states = states;
+		f_beatMonPt.setPoints(beatMonPointsAward);
+		
+	}
+	
+	private final PointAward f_beatMonPt = new PointAward(0);
+	
+	public PointAward getBeatMonPointsAward() {
+		return f_beatMonPt;
+	}
+	
+	public Place getLocation() {
+		return (Place) super.getLocation();
+	}
+	
+	public void setLocation(Thing location) {
+		assert(location instanceof Place);
+		super.setLocation(location);
+	}
+
+	private Stats f_states = new Stats(0, 0, 0, 0, 0, 0);
+	
+	public Stats getMonStates() {
+		return f_states;
+	}
+	
+	
+	
+}

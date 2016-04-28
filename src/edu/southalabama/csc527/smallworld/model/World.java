@@ -1,0 +1,601 @@
+package edu.southalabama.csc527.smallworld.model;
+
+import java.util.*;
+
+/**
+ * The simulated world in which simulated players lead their short, simulated
+ * lives. In the Model/View/Controller paradigm, this is the model. It is an
+ * aggregate that contains everything that exists in the world. It also acts as
+ * the subject in the Observer pattern, so that observers (e.g., views) can stay
+ * current when the world changes in some interesting way.
+ * <p>
+ * A newly constructed world contains a {@link Player} and a nowhere
+ * {@link Place}. The player is located at the nowhere place. The world, via
+ * method calls, may then be mutated into something more interesting. This
+ * approach ensures that even a newly constructed world is trivially playable.
+ * 
+ */
+public final class World {
+
+	/**
+	 * A map from an upper-case name (thus non-case sensitive) to a
+	 * corresponding {@link Thing} instance. Typically the key to this map will
+	 * be <code>name.toUpperCase()</code>.
+	 * 
+	 * By default, a World instance has 2 default Things:
+	 * 	  A {@link Player} object
+	 *    A {@link Place} object that is the default Place
+	 */
+	private final Map<String, Thing> f_keyToThing= new HashMap<String, Thing>();
+	
+	/**
+	 * Returns a copy of all the Things in this world.
+	 * 
+	 * @return a copy of the set of all Things in this world.
+	 */
+	public Set<Thing> getThings() {
+		return new HashSet<Thing>(f_keyToThing.values());
+	}
+	
+	/**
+	 * Gets the {@link Place} representing nowhere. This place always exists in
+	 * every world.
+	 * 
+	 * @return the place representing nowhere.
+	 */
+	public Place getNowherePlace() {
+		return getPlace("Very Remote Place");
+	}
+	
+	/**
+	 * A map from an upper-case name (thus non-case sensitive) to a
+	 * corresponding {@link Stats} instance. Typically the key to this map will
+	 * be <code>name.toUpperCase()</code>.
+	 */
+	private final Map<String, Stats> f_keyToStats= new HashMap<String, Stats>();
+
+	/**
+	 * Returns a copy of all the Stats in this world.
+	 * 
+	 * @return a copy of the set of all Stats in this world.
+	 */
+	public Set<Stats> getStats() {
+		return new HashSet<Stats>(f_keyToStats.values());
+	}
+	
+	/**
+	 * Constructs a new instance of the world class containing a single player
+	 * and the nowhere place. The player is located at the nowhere place.
+	 * 
+	 * @see #getNowherePlace()
+	 */
+	public World() {
+		Place nowhere = createPlace("Very Remote Place", "a", "You are in a very remote place.");
+		f_keyToThing.put(nowhere.getName().toUpperCase(),nowhere);
+		Player p = new Player(this);
+		f_keyToThing.put(p.getName().toUpperCase(), p);
+		clearMessage();
+	}
+
+	/**
+	 * Gets a reference to the sole player interacting with this world.
+	 * 
+	 * @return the sole player within this world.
+	 */
+	public Player getPlayer() {
+		Player player = null;
+		for (Thing t: getThings()) {
+			if (t instanceof Player) {
+				player = (Player) t;
+			}
+		}
+		return player;
+	}
+
+	/**
+	 * Returns <code>true</code> if the specified name is used for a
+	 * {@link Place} within this world, <code>false</code> otherwise. Names
+	 * are non-case sensitive, so "NAME" is considered the same name as "nAmE".
+	 * In addition, the namespace of the world is shared across all
+	 * {@link Place} instances.
+	 * 
+	 * @param name
+	 *            the non-null non-case sensitive name to check.
+	 * @return <code>true</code> if the specified name is used for a
+	 *         {@link Place} within this world, <code>false</code> otherwise.
+	 */
+	public boolean isNameUsed(String name) {
+		assert (name != null);
+		return f_keyToThing.containsKey(name.toUpperCase());
+	}
+	
+	/**
+	 * Returns <code>true</code> if the specified name is used for a
+	 * {@link Stats} within this world, <code>false</code> otherwise. Names
+	 * are non-case sensitive, so "NAME" is considered the same name as "nAmE".
+	 * In addition, the namespace of the world is shared across all
+	 * {@link Stats} instances.
+	 * 
+	 * @param name
+	 *            the non-null non-case sensitive name to check.
+	 * @return <code>true</code> if the specified name is used for a
+	 *         {@link Place} within this world, <code>false</code> otherwise.
+	 */
+	public boolean isStatsNameUsed(String name) {
+		assert (name != null);
+		return f_keyToStats.containsKey(name.toUpperCase());
+	}
+
+	/**
+	 * Gets the appropriate {@link Thing} instance with the specified name.
+	 * 
+	 * @param name
+	 *            the non-null non-case sensitive name of the desired
+	 *            {@link Thing} instance.
+	 * @return the appropriate {@link Thing} instance, or <code>null</code> if
+	 *         the specified name does not exist.
+	 */
+	public Thing getThingByName(String name) {
+		assert (name != null);	
+		return f_keyToThing.get(name.toUpperCase());
+	}
+
+	/**
+	 * Returns a copy of all the Places in this world.
+	 * 
+	 * @return a copy of the set of all Places in this world.
+	 */
+	public Set<Place> getPlaces() {
+		HashSet<Place> places = new HashSet<Place>();
+		for (Thing t: getThings()) {
+			if (t instanceof Place) {
+				places.add((Place) t);
+			}
+		}
+		return places;
+	}
+	
+	/**
+	 * Returns a copy of all the Minions in this world.
+	 * 
+	 * @return a copy of the set of all Minions in this world.
+	 */
+	public Set<Minion> getMinions() {
+		HashSet<Minion> minions = new HashSet<Minion>();
+		for (Thing t: getThings()) {
+			if (t instanceof Minion) {
+				minions.add((Minion) t);
+			}
+		}
+		return minions;
+	}
+	
+	/**
+	 * Returns a copy of all the Bosses in this world.
+	 * 
+	 * @return a copy of the set of all Bosses in this world.
+	 */
+	public Set<Boss> getBosses() {
+		HashSet<Boss> bosses = new HashSet<Boss>();
+		for (Thing t: getThings()) {
+			if (t instanceof Boss) {
+				bosses.add((Boss) t);
+			}
+		}
+		return bosses;
+	}
+
+	/**
+	 * Gets the appropriate {@link Place} instance with the specified name.
+	 * 
+	 * @param name
+	 *            the non-null non-case sensitive name of the desired
+	 *            {@link Place} instance.
+	 * @return the appropriate {@link Place} instance, or <code>null</code> if
+	 *         the specified name does not exist or is not of the {@link Place}
+	 *         type.
+	 */
+	public Place getPlace(String name) {
+		assert (name != null);
+		Thing result = getThingByName(name);
+		if (result instanceof Place)
+			return (Place) result;
+		else
+			return null;
+	}
+	
+	public Place getPlaceByName(String name) {
+		return getPlace(name);
+	}
+
+	/**
+	 * Constructs a new place within this world.
+	 * 
+	 * @param name
+	 *            a non-null unique name for the instance. The uniqueness of the
+	 *            name can't be dependent upon case, e.g., "Hall" is considered
+	 *            the same as "hall".
+	 * @param article
+	 *            the appropriate non-null indefinite article with which to
+	 *            prefix the name so as to form a proper short description,
+	 *            e.g., "the" or "a".
+	 * @param description
+	 *            a long, possibly mult-line, non-null description of this
+	 *            thing.
+	 * @return the new {@link Place} instance.
+	 * @throws IllegalStateException
+	 *             if the specified name already exists within this world.
+	 */
+	public Place createPlace(String name, String article, String description) {
+		assert (name != null);
+		assert (article != null);
+		assert (description != null);
+		if (isNameUsed(name)) {
+			throw new IllegalStateException(
+					"Construction of a new place named \""
+							+ name
+							+ "\" failed because the specified name already exists");
+		}
+		Place newPlace = new Place(this, name, article, description);
+		f_keyToThing.put(name.toUpperCase(), newPlace);
+		return newPlace;
+	}
+	
+	/**
+	 * Gets the appropriate {@link Item} instance with the specified name.
+	 * 
+	 * @param name
+	 *            the non-null non-case sensitive name of the desired
+	 *            {@link Item} instance.
+	 * @return the appropriate {@link Item} instance, or <code>null</code> if
+	 *         the specified name does not exist or is not of the {@link Item}
+	 *         type.
+	 */
+	public Item getItem(String name) {
+		assert (name != null);
+		Thing result = getThingByName(name);
+		if (result instanceof Item)
+			return (Item) result;
+		else
+			return null;
+	}
+	
+	/**
+	 * Gets all {@link Item} objects contained int the World.
+	 *
+	 * @return Set<Item>
+	 * 		the set of all Things in the World that are Items
+	 */
+	public Set<Item> getItems() {
+		Set<Item> items = new HashSet<Item>();
+		for (Thing t: getThings()) {
+			if (t instanceof Item) {
+				items.add((Item) t);
+			}
+		}
+		return items;
+	}
+	
+	/**
+	 * Constructs a new item within this world.
+	 * 
+	 * @param name
+	 *            a non-null unique name for the instance. The uniqueness of the
+	 *            name can't be dependent upon case, e.g., "Key" is considered
+	 *            the same as "key".
+	 * @param article
+	 *            the appropriate non-null indefinite article with which to
+	 *            prefix the name so as to form a proper short description,
+	 *            e.g., "the" or "a".
+	 * @param location
+	 *            a long, possibly mult-line, non-null description of this
+	 *            thing.            
+	 * @param description
+	 *            a long, possibly mult-line, non-null description of this
+	 *            thing.
+	 * @param takePoints
+	 *            points awarded for taking this Item
+	 * @param dropPoints
+	 *            points awarded for dropping this Item anywhere
+	 * @return the new {@link Item} instance.
+	 * @throws IllegalStateException
+	 *             if the specified name already exists within this world.
+	 */
+	public Item createItem(String name, String article, String location, String description, int takePoints, int dropPoints) {
+		assert (name != null);
+		assert (article != null);
+		assert (location != null);
+		if (isNameUsed(name)) {
+			throw new IllegalStateException(
+					"Construction of a new item named \""
+							+ name
+							+ "\" failed because the specified name already exists");
+		}
+		Item newItem = new Item(this, name, article, description, takePoints, dropPoints);
+		f_keyToThing.put(name.toUpperCase(), newItem);
+		
+		// Set the location of the item
+		Thing itemLocation = this.getThingByName(location);
+		if (itemLocation == null) {
+			newItem.setLocation(this.getNowherePlace());
+		}
+		else {
+			newItem.setLocation(itemLocation);
+		}
+		return newItem;
+	}
+
+	/**
+	 * Constructs a new minion within this world.
+	 * 
+	 * @param name
+	 *            a non-null unique name for the instance. The uniqueness of the
+	 *            name can't be dependent upon case, e.g., "goblin" is considered
+	 *            the same as "Goblin".
+	 * @param article
+	 *            the appropriate non-null indefinite article with which to
+	 *            prefix the name so as to form a proper short description,
+	 *            e.g., "the" or "a".
+	 * @param location
+	 *            a long, possibly mult-line, non-null description of this
+	 *            thing.            
+	 * @param states
+	 *            the states of the minion.
+	 *            thing.
+	 * @param beatMinPointsAward
+	 *            points awarded for beating the minion.
+	 * @return the new {@link Minion} instance.
+	 * @throws IllegalStateException
+	 *             if the specified name already exists within this world.
+	 */
+	public Minion createMinion(String name, String article, String location, String description, int beatMinPointsAward) {
+		assert (name != null);
+		assert (article != null);
+		assert (location != null);
+		if (isNameUsed(name)) {
+			throw new IllegalStateException(
+					"Construction of a new item named \""
+							+ name
+							+ "\" failed because the specified name already exists");
+		}
+		Minion newMin = new Minion(this, name, article, description, beatMinPointsAward);
+		f_keyToThing.put(name.toUpperCase(), newMin);
+		
+		// Set the location of the Minion
+		Thing minLocation = this.getThingByName(location);
+		if (minLocation == null) {
+			newMin.setLocation(this.getNowherePlace());
+		}
+		else {
+			newMin.setLocation(minLocation);
+		}
+		return newMin;
+	}
+	
+	/**
+	 * Constructs a new Boss within this world.
+	 * 
+	 * @param name
+	 *            a non-null unique name for the instance. The uniqueness of the
+	 *            name can't be dependent upon case, e.g., "dragon" is considered
+	 *            the same as "Dragon".
+	 * @param article
+	 *            the appropriate non-null indefinite article with which to
+	 *            prefix the name so as to form a proper short description,
+	 *            e.g., "the" or "a".
+	 * @param location
+	 *            a long, possibly mult-line, non-null description of this
+	 *            thing.            
+	 * @param states
+	 *            the states of the minion.
+	 *            thing.
+	 * @param beatMinPointsAward
+	 *            points awarded for beating the minion.
+	 * @return the new {@link Minion} instance.
+	 * @throws IllegalStateException
+	 *             if the specified name already exists within this world.
+	 */
+	public Boss createBoss(String name, String article, String location, String description, int beatBossPointsAward) {
+		assert (name != null);
+		assert (article != null);
+		assert (location != null);
+		if (isNameUsed(name)) {
+			throw new IllegalStateException(
+					"Construction of a new item named \""
+							+ name
+							+ "\" failed because the specified name already exists");
+		}
+		Boss newBoss = new Boss(this, name, article, description, beatBossPointsAward);
+		f_keyToThing.put(name.toUpperCase(), newBoss);
+		
+		// Set the location of the Boss
+		Thing bossLocation = this.getThingByName(location);
+		if (bossLocation == null) {
+			newBoss.setLocation(this.getNowherePlace());
+		}
+		else {
+			newBoss.setLocation(bossLocation);
+		}
+		return newBoss;
+	}
+	
+	/**
+	 * Constructs a new Stats set within this world.
+	 * 
+	 * @param hp
+	 * 			the numeric total health of the creature; if hp < 0, the creature is alive
+	 * @param mp
+	 * 			the numeric total magical essence of a creature; used for spells
+	 * @param str
+	 * 			the strength rating of a creature
+	 * @param def
+	 * 			the defensive ability of a creature
+	 * @param intel
+	 * 			the intelligence rating of a creature
+	 * @param hit
+	 * 			the accuracy rating of a creature
+	 * @param name
+	 * 			the creature this stat set is associated with
+	 */
+	public Stats createStats(int hp, int mp, int str, int def, int intel, int hit, String name, int maxHP, int maxMP){
+		assert (name != null);
+		if (isStatsNameUsed(name)) {
+			throw new IllegalStateException(
+					"Construction of a new stats set for \""
+							+ name
+							+ "\" failed because the specified set already exists");
+		}
+		Stats newStats = new Stats(hp, mp, str, def, intel, hit, name, maxHP, maxMP);
+		f_keyToStats.put(name.toUpperCase(), newStats);
+		return newStats;
+	}
+	
+	
+	/**
+	 * A non-null mutable string message.
+	 */
+	private StringBuilder f_message;
+
+	/**
+	 * A String holding the operating system-specific line separator obtained
+	 * from the system properties.
+	 */
+	public static String LINESEP = System.getProperty("line.separator");
+
+	/**
+	 * Returns the current message associated with this world.
+	 * 
+	 * @return The world's current message.
+	 */
+	public String getMessage() {
+		return f_message.toString();
+	}
+
+	/**
+	 * Sets the current message associated with this world to the specified
+	 * message. Any previous contents are lost.
+	 * 
+	 * @param message
+	 *            a message.
+	 */
+	public void setMessage(String message) {
+		clearMessage();
+		addToMessage(message);
+	}
+
+	/**
+	 * Appends a message to the world's current message.
+	 * 
+	 * @param message
+	 *            The new message to add to the world's current message.
+	 */
+	public void addToMessage(String message) {
+		if (message == null)
+			return;
+		f_message.append(message + LINESEP);
+	}
+
+	/**
+	 * Appends a blank line to the world's current message.
+	 */
+	public void addToMessage() {
+		f_message.append(LINESEP);
+	}
+
+	private void clearMessage() {
+		f_message = new StringBuilder();
+	}
+
+	/**
+	 * The set of observers for this world. Notified when this world has changed
+	 * in some interesting way.
+	 * 
+	 * @see #addObserver(IWorldObserver)
+	 * @see #removeObserver(IWorldObserver)
+	 * @see #getObservers()
+	 * @see #notifyObservers()
+	 */
+	private final Set<IWorldObserver> f_observers = new HashSet<IWorldObserver>();
+
+	/**
+	 * Gets a copy of the set of all observers of this world.
+	 * 
+	 * @return a copy of the set of all observers of this world.
+	 */
+	public Set<IWorldObserver> getObservers() {
+		return new HashSet<IWorldObserver>(f_observers); // defensive copy
+	}
+
+	/**
+	 * Adds an observer to be notified when the world has changed in some
+	 * interesting way.
+	 * 
+	 * @param observer
+	 *            the object to notify of changes to this world.
+	 */
+	public void addObserver(IWorldObserver observer) {
+		if (observer == null)
+			return;
+		f_observers.add(observer);
+	}
+
+	/**
+	 * Removes an observer from this world. Has no effect if the specified
+	 * observer was not previously added as an observer.
+	 * 
+	 * @param observer
+	 *            the object to stop notifying of changes to this world.
+	 */
+	public void removeObserver(IWorldObserver observer) {
+		if (observer == null)
+			return;
+		f_observers.remove(observer);
+	}
+
+	/**
+	 * Directs that the player's current turn is complete and that an update
+	 * notification should be sent to any observing views. This method erases
+	 * the world's current message after view notification is completed.
+	 */
+	public void turnOver() {
+		notifyObservers();
+		clearMessage();
+	}
+
+	/**
+	 * Notifies all observers that the world has changed in some interesting
+	 * way.
+	 */
+	private void notifyObservers() {
+		for (IWorldObserver observer : f_observers) {
+			observer.update(this);
+		}
+	}
+
+	/**
+	 * Flags if the game is over or not. Its value is <code>true</code> if the
+	 * game is over, <code>false</code> otherwise.
+	 * 
+	 * @see #isGameOver()
+	 * @see #setGameOver()
+	 */
+	private boolean f_gameOver = false;
+
+	/**
+	 * Reports if the game is over or not.
+	 * 
+	 * @return <code>true</code> if the game is over, <code>false</code>
+	 *         otherwise.
+	 */
+	public boolean isGameOver() {
+		return f_gameOver;
+	}
+
+	/**
+	 * Notifies this world that the game is over. Will cause all subsequent
+	 * calls to {@link #isGameOver()} to return <code>true</code>.
+	 */
+	public void setGameOver() {
+		f_gameOver = true;
+	}
+}

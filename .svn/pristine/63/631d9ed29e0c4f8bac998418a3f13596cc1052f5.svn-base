@@ -1,0 +1,116 @@
+package edu.southalabama.csc527.smallworld.model;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * An avatar that is controlled by, and represents, the user of the game. At
+ * present there is one {@link Player} roaming around per {@link World}
+ * instance.
+ * 
+ */
+public final class Player extends Fighter {
+	
+	/**
+	 * Constructs a new instance. Only to be invoked by the {@link World} class
+	 * once per {@link World} instance as each world only contains a single
+	 * player.
+	 * 
+	 * @param world
+	 *            the {@link World} instance this exists within.
+	 */
+	Player(World world) {
+		super(world,"Player","the","Our Hero");
+		setLocation(world.getNowherePlace());
+	}
+	
+	/**
+	 * Returns the non-null location of this Player.
+	 * 
+	 * @return the location of this Player
+	 */
+	public Place getLocation() {
+		return (Place) super.getLocation();
+	}
+
+	/**
+	 * Sets the non-null location of this Player.
+	 * 
+	 * @param location
+	 *            the new non-null location of this Player.
+	 */
+	public void setLocation(Thing location) {
+		assert (location instanceof Place);
+		super.setLocation(location);
+	}
+	
+	/**
+	 * The players score, initialized to 0, which stores the value of the points
+	 * accumulated by the player during the game
+	 */
+	private Integer f_score = new Integer(0);
+	
+	/**
+	 * Returns the score of this Player.
+	 * 
+	 * @return the score of this Player
+	 */
+	public int getScore() {
+		return f_score;
+	}
+	
+	/**
+	 * Sets the players score to exactly the value provided
+	 * 
+	 * @param value
+	 *  		amount of points for the player's score
+	 */
+	public void setScore(int value) {
+		f_score = new Integer(value);
+	}
+	
+	/**
+	 * Adds a particular value to the player's current score
+	 * 
+	 * @param value
+	 *  		amount of points to be added to the player's score
+	 */
+	public void addToScore(int value) {
+		int newvalue = value + f_score.intValue();
+		setScore(newvalue);
+	}
+	
+	/**
+	 * Returns items in the Player's inventory
+	 * 
+	 * @return set of Items that are located in the Player
+	 */
+	public Set<Item> getInventory() {
+		Set<Item> items = new HashSet<Item>();
+		for (Thing t: getThingsHere()) {
+			if (t instanceof Item) {
+				items.add((Item) t);
+			}
+		}
+		return items;
+	}
+	
+	/**
+	 * Allows the player to heal some HP if they have enough MP.
+	 */
+	public void heal(){
+		if(this.getStats() == null){
+			this.getWorld().addToMessage("The heal command is not supported in this version.");
+		}
+		else if(this.getStats().getMP() < 5){
+			this.getWorld().addToMessage("You don't have enough MP to cast the heal spell!");
+		}
+		else{
+			int healing = (this.getStats().getInt() * (int)(Math.random() * 5));
+			this.getStats().setHP(this.getStats().getHP() + healing);
+			this.getStats().setMP(this.getStats().getMP() - 5);
+			this.getWorld().addToMessage("You healed " + healing + " points of HP.");
+		}
+	}
+	
+}
